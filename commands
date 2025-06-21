@@ -1,0 +1,30 @@
+#Kube commands
+
+##This will print all three sections in one go, neatly separated. If you’re looking to parse or process this further (like filtering secrets only for namespaces with deployments), we can wrap it in a more advanced script using jq or awk.
+Want to take it up a notch and export this to a CSV or JSON file
+
+
+(
+  echo "=== Namespaces ==="
+  kubectl get ns -o=jsonpath="{range .items[*]}{.metadata.name}{'\n'}{end}"
+
+  echo -e "\n=== Deployments with Replicas ==="
+  kubectl get deployments --all-namespaces -o=jsonpath="{range .items[*]}{.metadata.namespace}{'\t'}{.metadata.name}{'\t'}{.spec.replicas}{'\n'}{end}"
+
+  echo -e "\n=== Secrets ==="
+  kubectl get secrets --all-namespaces -o=jsonpath="{range .items[*]}{.metadata.namespace}{'\t'}{.metadata.name}{'\n'}{end}"
+)
+
+
+
+#To enhance your command and display only the secrets mounted as volumes in deployments, we need to filter deployments that define volumes of type secret. Here's a shell-friendly command using kubectl and jsonpath:
+kubectl get deployments --all-namespaces -o=jsonpath="{range .items[*]}{.metadata.namespace}{'\t'}{.metadata.name}{'\t'}{range .spec.template.spec.volumes[*]}{.secret.secretName}{'\n'}{end}{end}" | grep -v '^\s*\s*$'
+
+
+#To include replicas 
+kubectl get deployments --all-namespaces -o=jsonpath="{range .items[*]}{.metadata.namespace}{'\t'}{.metadata.name}{'\t'}{.spec.replicas}{'\t'}{range .spec.template.spec.volumes[*]}{.secret.secretName}{','}{end}{'\n'}{end}" | sed 's/,\+$/\n/' | grep -v '^\s*\s*$'
+
+#- Added {.spec.replicas} to show the desired replica count.
+#- Used sed to clean up trailing commas.
+#- Still filters out empty lines with grep.
+#Let me know if you'd like to include container names or mount paths too — we can keep leveling this up!
