@@ -13,11 +13,18 @@
         <maven.compiler.target>17</maven.compiler.target>
     </properties>
 
-    //Maven Dependency for Bouncy Castl
-    <dependency>
+<dependencies>
+  <!-- Maven Dependency for Bouncy Castle -->
+  <dependency>
+  <groupId>org.bouncycastle</groupId>
+  <artifactId>bcprov-jdk15on</artifactId>
+  <version>1.70</version>
+</dependency>
+  <dependency>
     <groupId>org.bouncycastle</groupId>
-    <artifactId>bcpkix-jdk15on</artifactId>
+    <artifactId>bcprov-jdk15on</artifactId>
     <version>1.70</version>
-    </dependency>
+  </dependency>
+</dependencies>
 
 </project>
