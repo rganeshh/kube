@@ -10,7 +10,11 @@ import org.bouncycastle.openssl.PEMParser;
 import org.bouncycastle.openssl.jcajce.JcaPEMKeyConverter;
 import org.bouncycastle.cert.X509CertificateHolder;
 import org.bouncycastle.openssl.PEMEncryptedKeyPair;
-import org.bouncycastle.openssl.PEMEncryptedSubjectPrivateKeyInfo;
+//import org.bouncycastle.openssl.PEMEncryptedSubjectPrivateKeyInfo;
+import org.bouncycastle.cert.jcajce.JcaX509CertificateConverter;
+import java.security.cert.X509Certificate;
+
+
 
 public class ParallelCertScanner {
 
@@ -88,9 +92,13 @@ public class ParallelCertScanner {
             while ((obj = pemParser.readObject()) != null) {
                 if (obj instanceof X509CertificateHolder) {
                     X509CertificateHolder holder = (X509CertificateHolder) obj;
-                    X509Certificate cert = new JcaPEMKeyConverter().getCertificate(holder);
+                    //X509Certificate cert = new JcaPEMKeyConverter().getCertificate(holder);
+                    X509Certificate cert = new JcaX509CertificateConverter()
+                           .setProvider("BC")
+                           .getCertificate(holder);
+
                     addCertRow(path, cert, rows);
-                } else if (obj instanceof PEMEncryptedKeyPair || obj instanceof PEMEncryptedSubjectPrivateKeyInfo) {
+                } else if (obj instanceof PEMEncryptedKeyPair ) { //PEMEncryptedSubjectPrivateKeyInfo) {
                     logger.info("Encrypted private key found in: " + path + " (not extracting)");
                 } else {
                     logger.warning("Unrecognized PEM object in: " + path);

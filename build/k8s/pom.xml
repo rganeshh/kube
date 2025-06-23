@@ -15,21 +15,21 @@
 
 <dependencies>
   <!-- Maven Dependency for Bouncy Castle -->
-  <dependency>
-  <groupId>org.bouncycastle</groupId>
-  <artifactId>bcprov-jdk15on</artifactId>
-  <version>1.70</version>
-</dependency>
-<dependency>
-  <groupId>org.bouncycastle</groupId>
-  <artifactId>bcpkix-jdk15on</artifactId>
-  <version>1.70</version> <!-- or the latest version -->
-</dependency>
+
+
   <dependency>
     <groupId>org.bouncycastle</groupId>
     <artifactId>bcprov-jdk15on</artifactId>
     <version>1.70</version>
   </dependency>
+
+<dependency>
+  <groupId>org.bouncycastle</groupId>
+  <artifactId>bcpkix-jdk15on</artifactId>
+  <version>1.70</version> <!-- or latest -->
+</dependency>
+
+
 </dependencies>
 
 </project>
